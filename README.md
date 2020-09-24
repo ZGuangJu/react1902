@@ -9,7 +9,7 @@ cd 项目名  npm start/yarn start
  public 静态资源 
  src  主要文件
  gitignore git忽略文件
- package.json  依赖包的版本 脚本运行   
+ package.json  依赖包的版本 脚本运行  可通过npm i 把包下回来   
 4. 入口文件是src/index.js  
    src下只保留index.js
 5. window.root 拿到是index.html里面的divid为root元素  
