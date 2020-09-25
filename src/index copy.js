@@ -1,20 +1,14 @@
 import React,{Component} from 'react';
 import {render} from 'react-dom';
-// react state 组件状态 组件自己的数据  类组件 
-//事件的三种写法 
-// 1. 事件的第一种写法 通过bind防止this丢失
-//2. 通过es7语法 解决this问题
 class My extends Component {
   constructor(props){
     super()
     // this.state = {feeling:'不好'} //定义初始化状态
   }
   state = {
-    feeling:'不好',
-    feel:'状态'
+    feeling:'不好'
   }
-  handleClick=()=>{
-     //react类组件状态修改必须通过this.setState方法 
+   handleClick=()=>{
     this.setState({
       feeling:'非常非常好'
     })
@@ -24,9 +18,8 @@ class My extends Component {
        return (<>
         <div>我今天心情{this.state.feeling}</div>
         <button onClick={this.handleClick}>揍了王子豪一顿，心情变{this.state.feeling}</button>
-        <br/>
-        {this.state.feel}
-       </>)
+        {/* <button onClick={this.handleClick1}>点击改变心情2</button> */}
+     </>)
      
    }
 }

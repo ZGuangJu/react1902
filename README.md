@@ -38,7 +38,35 @@ document.createTextNode 创建文本节点
 9. { } 必须有返回值 
 ## 编程单词 
  Invalid  无效的    property 属性  dangerously 危险的 
+## state变量渲染和setState修改数据
 
+在组件⾥⾯我们通过{}在JSX⾥⾯渲染变量
+
+5 如果数据需要修改，并且需要⻚页⾯同时响应改变，那就需要把变量 放在state⾥⾯，同时使⽤setState修改 初始化状态state
+
+// 初始化状态
+
+this.state = { count: 0 };
+
+更新状态使⽤setState,不能直接this.state.count=xxx
+
+// 更新状态
+
+this.setState({ count: this.state.count + 1 });
+
+注意事项
+
+setState是异步的，底层设计同⼀个⽣命周期会批量操作更新 state setState第⼆个参数是⼀个可选参数，传⼊⼀个回调函数可以 获取到最新的state 当修改的state依赖上⼀次修改的state的值时，可使⽤以下这 种⽅法修改
+
+6 this.setState((prevState, prevProps)=>({
+
+//prevState：上⼀次修改的状态state //prevProps：上⼀次修改的属性props count: prevState.count + 1
+
+}), () => {
+
+//这⾥可以获取到最新的state console.log(this.state.count);
+
+});
 
 ##  函数组件hooks  react 16.8版本之前   
 只在顶层调⽤Hooks
@@ -51,13 +79,7 @@ React Hooks⽬前只⽀持函数组件，所以⼤家别在class组件或 者普
 2. ⾃定义hooks 
 
 函数组件 ⾃定义hooks 在未来的版本React Hooks会扩展到class组件，但是现阶段不能 再class⾥使⽤
-
-
-
-
-
 1. 旧版上下文 
-
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 class Header extends Component {
