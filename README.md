@@ -67,7 +67,24 @@ setState是异步的，底层设计同⼀个⽣命周期会批量操作更新 st
 //这⾥可以获取到最新的state console.log(this.state.count);
 
 });
+强制更新状态(如果没有特殊情况，不建议使用)
+```js
+ this.state.number +=1
+    this.forceUpdate() //不管数据有没有改变 都进行强制更新  
+    console.log(this.state)
+```
+## props属性传递
 
+⽗组件向⼦组件传递属性利⽤props接收 使⽤例⼦如下：
+//⽗组件传⼊
+
+<PropsDemo title="Tim⽼师教react"></PropsDemo>
+
+//⼦组件使⽤ //class组件使⽤ <h1>{this.props.title}</h1> //函数型组件使⽤ function xxx(props){
+
+return <h1>{props.title}</h1> } //解构赋值写法 function xxx({title}){
+
+return <h1>{title}</h1> }
 ##  函数组件hooks  react 16.8版本之前   
 只在顶层调⽤Hooks
 1. Hooks的调⽤尽量只在顶层作⽤域进⾏调⽤ 不要在循环，条件或者是嵌套函数中调⽤Hook，否则可能会⽆ 法确保每次组件渲染时都以相同的顺序调⽤Hook 
