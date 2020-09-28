@@ -76,6 +76,7 @@ setState是异步的，底层设计同⼀个⽣命周期会批量操作更新 st
 ## props属性传递
 
 ⽗组件向⼦组件传递属性利⽤props接收 使⽤例⼦如下：
+```js
 //⽗组件传⼊
 
 <PropsDemo title="Tim⽼师教react"></PropsDemo>
@@ -85,6 +86,36 @@ setState是异步的，底层设计同⼀个⽣命周期会批量操作更新 st
 return <h1>{props.title}</h1> } //解构赋值写法 function xxx({title}){
 
 return <h1>{title}</h1> }
+```
+
+## 条件渲染与数据循环
+
+条件渲染写法，⼀般使⽤三⽬表达式
+```js
+//三⽬表达式写法 
+{this.state.showTitle?<h1>{this.props.title} </h1>:null} 
+//优化上⾯三⽬表达式写法，先在render函数⾥定义⼀个变量装载 结果 
+let result=this.state.showTitle?<h1> {this.props.title}</h1>:null {result} 
+//直接使⽤if else写 
+let result if(this.state.showTitle){
+result=( <h1>this.props.title</h1> ) }else{ result=null }
+
+//数据循环渲染写法
+
+class App extends React.Component{
+constructor(props){ 
+  super(props) 
+  this.state = { goods: [ { title: 'html+css基础⼊⻔门', price: 19.8}, { title: 'js零基础阶级', price: 29.8}, { title: 'vue基础⼊⻔门', price: 19.8}, { title: 'vue电商单⻚页⾯项⽬实战', price:39.8},{ title: 'react零基础进阶单⻚页⾯项⽬实战', price: 59.8}, ] } } 
+ render(){ 
+   return <div> 
+         <ul> {this.state.goods.map(good=>{
+        return <li key={good.title}><span>{good.title} </span> <span>{good.price}元 </span> </li>})}
+        </ul> 
+      </div>
+  }
+}
+```
+domdiff  
 ##  函数组件hooks  react 16.8版本之前   
 只在顶层调⽤Hooks
 1. Hooks的调⽤尽量只在顶层作⽤域进⾏调⽤ 不要在循环，条件或者是嵌套函数中调⽤Hook，否则可能会⽆ 法确保每次组件渲染时都以相同的顺序调⽤Hook 
@@ -96,6 +127,72 @@ React Hooks⽬前只⽀持函数组件，所以⼤家别在class组件或 者普
 2. ⾃定义hooks 
 
 函数组件 ⾃定义hooks 在未来的版本React Hooks会扩展到class组件，但是现阶段不能 再class⾥使⽤
+
+1. useState---组件状态管理钩⼦
+   useState能使函数组件能够使⽤state 基本使⽤如下所示
+
+ ```js
+ const [state,setState]=useState(initState)
+ ```
+
+- state是要设置的状态  
+- setState是更新state的⽅法，只是⼀个⽅法名，可以随意更改 
+- initState是初始的state，可以是随意的数据类型，也可以是回调函数，但是函数必须是有返回值
+
+ ```js
+ const [state,setState]=useState(()=>{return {name:"lili"}})
+ ```
+
+2. useEffect---副作⽤处理钩⼦
+
+- useEffect
+ 数据获取、订阅、定时执⾏任务、⼿动修改ReactDOM这些⾏
+ 为都可以称为副作⽤。⽽useEffect就是为了处理这些副作⽤⽽
+ ⽣的
+ useEffect也是componentDidMount、
+ componentDidUpdate和componentWillUnmount这⼏个
+ ⽣命周期⽅法的统⼀
+
+- useEffect基本使用：
+
+```js
+ useEffect(callback,array)
+
+ useEffect(() =>{
+ //副作⽤逻辑
+ xxxxxx
+ return ()=>{
+ //清理副作⽤需要清理的内容
+ //组件渲染和组件 卸载前执⾏的代码
+ }
+ },[])
+```
+
+- array(可选参数)：数组，⽤于控制useEffect的执⾏
+分三种情况
+
+ 1. 空数组，则只会执⾏⼀次（即初次渲染render）
+ 2. ⾮空数组，useEffect会在数组发⽣改变后执⾏
+ 3. 不填array这个数组，useEffect每次渲染都会执⾏
+
+- 使用例子  
+
+```js
+import {useState,useEffect} from 'react'
+const App=() => {
+ const [count,setState]=useState(0)
+ useEffect(() =>{
+ //更新⻚页⾯标题
+ document.title=`您点击了${count}次了哦`
+ },[count])
+ return (
+ <div>
+ <div>你点击了{count}次</div>
+ <button onClick={()=>setState(count+1)}>点 击</button>
+ </div>
+ )
+}
+```
 1. 旧版上下文 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
@@ -257,3 +354,5 @@ export default App1;
 ## react 路由
 1 下载  `npm install react-router-dom`
 
+// 1 用类组件写条件渲染 和 循环渲染 
+// 2 使用useState 实现 本地时间每秒自动计时    

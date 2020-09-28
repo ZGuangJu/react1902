@@ -1,57 +1,20 @@
-import React from 'react'
+import React,{useState} from 'react'
 import {render} from 'react-dom'
-// react分两种 函数组件 和类组件 
-// function Student1 (props){
-//   return (<>
-//           <div>我是函数组件</div>
-//             姓名-{props.name}
-//             年龄-{props.age}
-//             性别-{props.sex}
-//         </>)
-// }
-function Student1 ({name,age,sex}){
-  return (<>
-          <div>我是函数组件</div>
-            姓名-{name}
-            年龄-{age}
-            性别-{sex}
-        </>)
-}
-//组件传值 props属性传递  只能从上到下传递
-// 父亲  -> 儿子  
-//有很多学生 姓名 年龄  性别  
-class Student extends React.Component{
-   constructor(props){
-       super(props) //this.props = props 
-   }
-   render(){
-       return <>
-          姓名-{this.props.name},
-          年龄-{this.props.age}岁,
-          性别-{this.props.sex},
-         </>
-   }
-}
-let  cui  = {
-  name:'崔浩然',
-  age:8,
-  sex:'男',
-  hobby:'打球'
-}
-  
-//所有学生的集合 
-class Students extends React.Component{
-   render(){
-       return <>
-            <Student {...cui}></Student>
-            <Student name='张广聚' age='9' sex='男'></Student>
-            </>
-   }
+//16.8以前函数组件是没有状态的 hooks是16.8版本以后新增的  
+//hooks useState 的使用 
+function Sul(){
+    const  [a,setA] = useState(()=>{
+      return 1 +2
+    })
+    // state = 0  function setState (state){}
+    //需要解构的数组 第一参数是要设置的状态的值  第二个参数是一个用来更新状态的方法  useState的参数表示state的初始值 
+    return <div>
+        {a}
+        <button onClick={()=>setA(state =>state+1)}>点击加1</button>
+    </div>
 }
 
-render(
-  <>
-  <Students></Students>
-  <Student1 name="王子豪" age={5} sex="未知"></Student1>
-</>
-,window.root)
+
+
+render(<Sul></Sul>,window.root)
+

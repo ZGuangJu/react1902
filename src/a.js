@@ -1,7 +1,6 @@
-let count =1 
-function fn(cb){
-   count+=1
-	 
-}
+function fn() {}
+let a =1 
+let arr = [a,fn]
+let [c,setc] = arr 
+console.log(c,setc)
 
-[fn,fn,fn,cb]
