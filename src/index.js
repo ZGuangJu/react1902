@@ -1,20 +1,68 @@
-import React,{useState} from 'react'
+import React,{createRef}from 'react'
 import {render} from 'react-dom'
-//16.8以前函数组件是没有状态的 hooks是16.8版本以后新增的  
-//hooks useState 的使用 
-function Sul(){
-    const  [a,setA] = useState(()=>{
-      return 1 +2
+class Parent extends React.Component{
+  constructor(){
+    super()
+    this.inputRef = createRef()
+    // 父亲 有张银行卡 两个儿子都可以存钱改变余额 
+    this.state = {
+      money:10000 
+    }
+  }
+  getFocus=()=>{
+     this.inputRef.current.inRef.current.focus()
+  }
+  // 父亲提供一个改变自己余额的方法
+  changeMoney=(x)=>{
+    debugger;
+    this.setState({
+      money:this.state.money+x
     })
-    // state = 0  function setState (state){}
-    //需要解构的数组 第一参数是要设置的状态的值  第二个参数是一个用来更新状态的方法  useState的参数表示state的初始值 
-    return <div>
-        {a}
-        <button onClick={()=>setA(state =>state+1)}>点击加1</button>
-    </div>
+  }
+  render() {
+    return (
+      <div>
+          父亲银行余额{this.state.money}$
+          <TextInput changeMoney = {this.changeMoney} ref={this.inputRef}></TextInput>
+         <TextInput2 changeMoney = {this.changeMoney}></TextInput2>
+         <button onClick={this.getFocus}>点击获取焦点</button>
+      </div>
+    )
+  }
+}
+class TextInput extends React.Component{
+  constructor(){
+    super()
+     this.inRef  = createRef()
+  }
+  addMoney=()=>{
+     
+    //通过this.props 拿到父组件传过来的方法 
+    let SonMoney = parseFloat(this.inRef.current.value)
+    this.props.changeMoney(SonMoney)
+  }
+  render(){
+    return (
+      <>
+        我是input组件 
+        <input ref= {this.inRef}/>
+        <button onClick={this.addMoney}>存钱</button>
+      </>
+    )
+  }
+}
+class TextInput2 extends React.Component{
+  constructor(){
+    super()
+     this.inRef  = createRef()
+  }
+  render(){
+    return <>
+       第二个组件 
+       <input ref= {this.inRef}/>
+     </>
+  }
 }
 
-
-
-render(<Sul></Sul>,window.root)
+render(<Parent/>,window.root)
 

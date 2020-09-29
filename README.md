@@ -73,7 +73,7 @@ setState是异步的，底层设计同⼀个⽣命周期会批量操作更新 st
     this.forceUpdate() //不管数据有没有改变 都进行强制更新  
     console.log(this.state)
 ```
-## props属性传递
+## props属性传递(可以传递任何值（方法或者属性）)
 
 ⽗组件向⼦组件传递属性利⽤props接收 使⽤例⼦如下：
 ```js
@@ -115,6 +115,19 @@ constructor(props){
   }
 }
 ```
+##  ref 的基本使用
+1. 类组件使用ref  Creatref
+  构造函数 construcotor 代码
+```js
+  //construcotor
+ this.refA = React.creatRef()
+ // 组件里面使用 ref ='定义的ref'
+  <input  ref ={this.refA} />
+ // 取值和赋值  属性会放在current上面 
+  this.refA.current 
+```
+2. 类组件ref 和 props 配合使用  
+ 
 domdiff  
 ##  函数组件hooks  react 16.8版本之前   
 只在顶层调⽤Hooks
@@ -356,3 +369,8 @@ export default App1;
 
 // 1 用类组件写条件渲染 和 循环渲染 
 // 2 使用useState 实现 本地时间每秒自动计时    
+
+
+//1.写一个 购物车列表 数据自定义 写出购物车商品价格综合 (后面实现单选去 全选)  
+[{name:'苹果',number:3,price:3.8 },{name:'橘子',number:6,price:8 }]
+3*3.8 + 6*8 
