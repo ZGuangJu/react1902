@@ -15,7 +15,17 @@ export default class App extends Component {
   }
   // 单选事件
   handleChange = (index) => {
-    console.log(index);
+     let list = [...this.state.carlist]
+      //点击到的选中状态的这一项取反 
+     list[index].box = !list[index].box 
+     //单选事件里面也需要判断当前是不是全选状态 
+     // every的特点 只要有一项为false 就不是全选 
+     let all =  list.every(item=>item.box ==true)
+     this.setState({
+       carlist:list,
+       checkAll:all
+     })
+
   };
   //全选事件
   changeAll = () => {
