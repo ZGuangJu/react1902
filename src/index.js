@@ -17,7 +17,7 @@ class App extends Component {
   sumPrice=()=>{
     let  list = [...this.state.carlist]
     //只计算选中的商品的价格  
-    let buylist  = list.filter(item=>item.checked==true)
+    let buylist  = list.filter(item=>item.checked===true)
      let total = buylist.reduce((prev,next)=>{
       return prev +next.num*next.price
     },0)
@@ -30,7 +30,7 @@ class App extends Component {
     let list = [...this.state.carlist];
     list[index].checked = !list[index].checked;
     //改全选的状态 只要有一个没选中的就不是全选
-    let all = list.every((item) => item.checked == true);
+    let all = list.every((item) => item.checked === true);
     this.setState({
       carlist: list,
       checkAll: all,
