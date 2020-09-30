@@ -21,8 +21,8 @@ function Student1 ({name,age,sex}){
 // 父亲  -> 儿子  
 //有很多学生 姓名 年龄  性别  
 class Student extends React.Component{
-   constructor(props){
-       super(props) //this.props = props 
+   constructor(){
+       super() //this.props = props 
    }
    render(){
        return <>

@@ -1,68 +1,70 @@
-import React,{createRef}from 'react'
-import {render} from 'react-dom'
-class Parent extends React.Component{
-  constructor(){
-    super()
-    this.inputRef = createRef()
-    // 父亲 有张银行卡 两个儿子都可以存钱改变余额 
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+// 作业 https://www.cnblogs.com/rabbit-lin0903/p/11603084.html
+export default class App extends Component {
+  constructor() {
+    super();
     this.state = {
-      money:10000 
+      carlist: [
+        { name: '苹果', num: 3, price: 4, box: false },
+        { name: '香蕉', num: 5, price: 8.8, box: false },
+        { name: '菠萝', num: 9, price: 10.8, box: false },
+      ],
+      checkAll: false, //定义全选的状态
+    };
+  }
+  // 单选事件
+  handleChange = (index) => {
+    console.log(index);
+  };
+  //全选事件
+  changeAll = () => {
+    let list = [...this.state.carlist];
+    //每次点击全选按钮  把 全选的状态取反
+    let all = this.state.checkAll;
+    all = !all;
+    //循环每一项 让每一项的选中状态 和点击全选的状态相同
+    for (let i = 0; i < list.length; i++) {
+      list[i].box = all;
     }
-  }
-  getFocus=()=>{
-     this.inputRef.current.inRef.current.focus()
-  }
-  // 父亲提供一个改变自己余额的方法
-  changeMoney=(x)=>{
-    debugger;
+    console.log(all);
     this.setState({
-      money:this.state.money+x
-    })
-  }
+      checkAll: all, //定义全选的状态
+    });
+  };
   render() {
     return (
       <div>
-          父亲银行余额{this.state.money}$
-          <TextInput changeMoney = {this.changeMoney} ref={this.inputRef}></TextInput>
-         <TextInput2 changeMoney = {this.changeMoney}></TextInput2>
-         <button onClick={this.getFocus}>点击获取焦点</button>
+        全选 ：
+        <input
+          type="checkbox"
+          checked={this.state.checkAll}
+          onChange={this.changeAll}
+          value=""
+        />
+        {this.state.carlist.map((item, index) => {
+          return (
+            <li key={item.name}>
+              <br />
+              <input
+                type="checkbox"
+                checked={item.box}
+                onChange={()=>{this.handleChange(index)}}
+                value=""
+              />
+              名称:{item.name}
+              数量：{item.num}
+              价格：{item.price}
+            </li>
+          );
+        })}
+        总价：
+        {this.state.carlist.reduce((prev, next) => {
+          return prev + next.num * next.price;
+        }, 0)}
       </div>
-    )
-  }
-}
-class TextInput extends React.Component{
-  constructor(){
-    super()
-     this.inRef  = createRef()
-  }
-  addMoney=()=>{
-     
-    //通过this.props 拿到父组件传过来的方法 
-    let SonMoney = parseFloat(this.inRef.current.value)
-    this.props.changeMoney(SonMoney)
-  }
-  render(){
-    return (
-      <>
-        我是input组件 
-        <input ref= {this.inRef}/>
-        <button onClick={this.addMoney}>存钱</button>
-      </>
-    )
-  }
-}
-class TextInput2 extends React.Component{
-  constructor(){
-    super()
-     this.inRef  = createRef()
-  }
-  render(){
-    return <>
-       第二个组件 
-       <input ref= {this.inRef}/>
-     </>
+    );
   }
 }
 
-render(<Parent/>,window.root)
-
+render(<App />, window.root);
