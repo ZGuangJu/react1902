@@ -3,7 +3,6 @@
 npx create-react-app 项目名  
 2. 启动项目
 cd 项目名  npm start/yarn start 
-
 3. 项目目录
  nodemoules  依赖的包 
  public 静态资源 
@@ -116,7 +115,7 @@ constructor(props){
 }
 ```
 ##  ref 的基本使用
-1. 类组件使用ref  Creatref
+ 类组件使用ref  Creatref 函数组件可以使用useRef
   构造函数 construcotor 代码
 ```js
   //construcotor
@@ -126,7 +125,25 @@ constructor(props){
  // 取值和赋值  属性会放在current上面 
   this.refA.current 
 ```
-2. 类组件ref 和 props 配合使用  
+## class组件（类）组件的生命周期 
+#### 挂载（当组件实例被创建并插入DOM中）的时候 生命周期的调用顺序
+1. 构造函数  constructor()  初始化状态
+`
+ static getDerivedStateFromProps(nextprops,prevstate)
+ 根据新的属性(props)生成新的状态(state) 
+ 参数是新的属性props和老的状态，此生命周期不常用 
+`
+2. render()  把虚拟dom变成真实dom并插入到dom元素中
+3. componentDidMount() dom挂载完成     
+- 组件的渲染顺序  父组件先渲染(父组件render之后)  子组件开始渲染  子组件挂载完成之后(componentDidMount)父组件最后挂载完成(componentDidMount) 
+
+####  组件更新 组件的 props 或 state 发生变化时会触发更新。组件更新的生命周期调用顺序如下：
+1. static getDerivedStateFromProps()
+2. shouldComponentUpdate() 
+- 如果 shouldComponentUpdate返回的是false 则不在继续
+3. render()  
+4. getSnapshotBeforeUpdate() 获取dom更新前的快照 
+5. componentDidUpdate()
  
 domdiff  
 ##  函数组件hooks  react 16.8版本之前   
