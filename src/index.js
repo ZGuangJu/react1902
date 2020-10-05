@@ -1,53 +1,56 @@
-import { render} from 'react-dom'
-import React, { Component,createRef } from 'react'
-const styleObJ = {
-   position:'fixed',
-   width:'200px',
-   height:'100px',
-   background:'black',
-   overflowY:'scroll',
-   color:'white'
-
+import React, { Component,createContext } from 'react'
+//上下文 跨层级 组件传值 context 提供了 两个组件 Provide（提供者）  Consumer（消费者） 
+import {render} from 'react-dom'
+//创建上下文对象
+let ThemeContext = createContext()
+ class App extends Component {
+	 constructor(){
+		 super()
+		 this.state= {
+			 money:100  
+		 }
+	}
+	//给孙子一个可以花钱的方法
+	consumMoney=(money)=>{
+		  this.setState({
+				money:this.state.money-money
+			})
+	}
+	render() {
+		return (
+			//把传递数据的组件用Provider包裹 通过value属性进行数据传递
+			<ThemeContext.Provider value={{money:this.state.money,consumMoney:this.consumMoney}}>
+			  <div>
+				 上下文传递,卡里还有{this.state.money}元
+				  <Child></Child>
+		    </div>
+			</ThemeContext.Provider>
+		)
+	}
 }
-class Lifecycle extends Component {
-  constructor(){
-    super()
-    this.state= {list:[]}
-    this.el = createRef()
-    console.log('1 初始化状态')
-  }
-  
- componentDidMount(){
-   this.timer = setInterval(() => {
-     this.setState({
-       list:[`${this.state.list.length}`,...this.state.list]
-     })
-   }, 1000);
- }
- //获取更新前的快照 
- //新的scrolltop = 老scrolltop + (新的scrollheigt - 老的scrollheigt) 
- getSnapshotBeforeUpdate(){//返回值会作为componentDidUpdate的第三个参数
-     let eldom = this.el.current
-     console.log(eldom.scrollHeight)
-     return {
-       prevH:eldom.scrollHeight,
-    }
- }
- componentDidUpdate(prevProps, prevState, snapshot){
-    this.el.current.scrolltop= this.el.current.scrolltop+(this.el.current.scrollHeight-snapshot.prevH)
-   
- }
-render() {
-     return <div style={styleObJ}  ref ={this.el}>
-      {this.state.list.map((item,index)=>{
-        return (
-          <li key={index}>
-            {item}
-          </li>
-        )
-      })}
-     </div>
-  }
+class Child extends Component {
+	render() {
+		return (
+			<div>
+				 我是子组件
+				 <Grondson></Grondson>
+			</div>
+		)
+	}
+}
+class Grondson extends Component {
+  //定义一个静态属性接收上下文对象 上下对象会挂载到this.context上面   
+	static contextType = ThemeContext
+	render() {
+		console.log(this.context)
+		return (
+			< >
+				 我是孙子组件 爷爷给的钱是 {this.context.money}
+				 <button onClick={()=>this.context.consumMoney(10)}>花10块钱</button>
+			</>
+		)
+	}
 }
 
-render(<Lifecycle/>,window.root)
+
+render(<App></App>,window.root)

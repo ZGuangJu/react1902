@@ -143,8 +143,70 @@ constructor(props){
 - 如果 shouldComponentUpdate返回的是false 则不在继续
 3. render()  
 4. getSnapshotBeforeUpdate() 获取dom更新前的快照 
-5. componentDidUpdate()
- 
+5. componentDidUpdate()  会在更新后会被立即调用。首次渲染不会执行此方法。
+#### 卸载 当组件从 DOM 中移除时会调用如下方法：
+componentWillUnmount()
+#### 生命周期流程(有更新)
+construtor -> getDerivedStateFromProps（静态方法）-> 询问是否需要更新->shouldComponentUpdate不需要(中断) 
+5. componentDidUpdate()  会在更新后会被立即调用。首次渲染不会执行此方法。
+construtor -> getDerivedStateFromProps（静态方法）-> 询问是否需要更新->shouldComponentUpdate需要-> render(渲染)->getSnapshotBeforeUpdate(获取到更新的dom) -> componentDidUpdate
+## Render 阶段（Render及之前的生命周期）纯净且不包含副作用。可能会被 React 暂停，中止或重新启动
+construtor render 初始化状态和接收props参数
+## “Pre-commit 阶段”
+可以读取 DOM。 getSnapshotBeforeUpdate 
+## “commit 阶段” 可以使用 DOM，运行副作用，安排更新。(重点)
+componentDidMount  componentDidUpdate 
+componentWillUnmount
+## 上下文传值
+1. 创建上下文对象  createContext
+2. 祖先级组件使用Provider组件的value进行值传递
+3. 接收数据的组件 通过定义 static contextType = 定义的上下文对象 传递的属性会挂载到this.context上面
+```js
+import React, { Component,createContext } from 'react'
+ import {render} from 'react-dom'
+//创建上下文对象
+let ThemeContext = createContext()
+ class App extends Component {
+	 constructor(){
+		 super()
+		 this.state= {
+			 money:100  
+		 }
+	}
+	render() {
+		return (
+			 <ThemeContext.Provider value={{money:this.state.money}}>
+			  <div>
+				 上下文传递
+				  <Child></Child>
+		    </div>
+			</ThemeContext.Provider>
+		)
+	}
+}
+class Child extends Component {
+	render() {
+		return (
+			<div>
+				 我是子组件
+				 <Grondson></Grondson>
+			</div>
+		)
+	}
+}
+class Grondson extends Component {
+  static contextType = ThemeContext
+	render() {
+		console.log(this.context)
+		return (
+			< >
+				 我是孙子组件 爷爷给的钱是 {this.context.money}
+			</>
+		)
+	}
+}
+```
+
 domdiff  
 ##  函数组件hooks  react 16.8版本之前   
 只在顶层调⽤Hooks
@@ -223,111 +285,9 @@ const App=() => {
  )
 }
 ```
-1. 旧版上下文 
-import React, { Component } from 'react'
-import PropTypes from 'prop-types';
-class Header extends Component {
-    //定义子上下文对象的属性和类型
-    static childContextTypes = {
-        name:PropTypes.string,
-        age:PropTypes.number
-    }
-    //返回或者说定义真正的子上下文
-    getChildContext(){
-        return {
-            age:10,
-            name:'Header' 
-        }
-    }
-    render() {
-        console.log(this.context)
-        return <div style={{ border: '5px solid green', padding: '5px' }}>
-            
-            <Title></Title>
-        </div>
-    }
-}
-class Title extends Component {
-    //表示或者 说指定我要获取哪些上下文对象
-    static contextTypes = {
-        color: PropTypes.string,
-        name:PropTypes.string,
-        age:PropTypes.number
-    }
-    render() {
-        console.log(this.context)
-        return <div style={{ border: '5px solid orange', padding: '5px',color:this.context.color }}>
-            Title
-        </div>
-    }
-}
-class Main extends Component {
-    render() {
-        return <div style={{ border: '5px solid blue', padding: '5px' }}>
-            Main
-            <Content></Content>
-        </div>
-    }
-}
-class Content extends Component {
-    static contextTypes = {
-        color: PropTypes.string,
-        name:PropTypes.string,
-        age:PropTypes.number,
-        setColor:PropTypes.func
-    }
-    render() {
-        return <div style={{ border: '5px solid pink', padding: '5px',color:this.context.color }}>
-            Content
-            <button onClick={()=>this.context.setColor('red')}>变红</button>
-            <button onClick={()=>this.context.setColor('green')}>变绿</button>
-        </div>
-    }
-}
-export default class Page extends Component {
 
-    constructor() {
-        super();
-        this.state = { color: 'gray'};
-    }
-    //定义子上下文对象的属性和类型
-    static childContextTypes = {
-        name:PropTypes.string,
-        color:PropTypes.string,
-        setColor: PropTypes.func
-    }
-    //返回或者说定义真正的子上下文
-    getChildContext(){
-        return {
-            color:this.state.color,
-            setColor:this.setColor,
-            name:'Page' 
-        }
-    }
-    setColor = (color)=>{
-        this.setState({color});
-    }
-    render() {
-        return (
-            <div style={{ border: '5px solid red', padding: '5px' }}>
-                Page
-                <Header>
-                    <Title>
 
-                    </Title>
-                </Header>
-                <Main>
-                    <Content>
 
-                    </Content>
-                </Main>
-            </div>
-        )
-    }
-}
-
-新版上下文 
-static contextType = ThemeContex
 
 ## 使用hooks实现异步请求  
 
