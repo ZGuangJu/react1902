@@ -1,56 +1,40 @@
-import React, { Component,createContext } from 'react'
-//上下文 跨层级 组件传值 context 提供了 两个组件 Provide（提供者）  Consumer（消费者） 
-import {render} from 'react-dom'
-//创建上下文对象
-let ThemeContext = createContext()
- class App extends Component {
-	 constructor(){
-		 super()
-		 this.state= {
-			 money:100  
-		 }
-	}
-	//给孙子一个可以花钱的方法
-	consumMoney=(money)=>{
-		  this.setState({
-				money:this.state.money-money
-			})
-	}
-	render() {
-		return (
-			//把传递数据的组件用Provider包裹 通过value属性进行数据传递
-			<ThemeContext.Provider value={{money:this.state.money,consumMoney:this.consumMoney}}>
-			  <div>
-				 上下文传递,卡里还有{this.state.money}元
-				  <Child></Child>
-		    </div>
-			</ThemeContext.Provider>
-		)
-	}
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import PropTypes from 'prop-types'
+// proptype 属性验证 开发人员使用(开发环境） 生产环境无效 
+// 可以使用 static defaultProps 定义默认值  propTypes 类型检查发生在 defaultProps 赋值后
+class App extends Component {
+ static defaultProps = {
+    n :1
+  }
+  static propTypes ={
+     name:PropTypes.number
+  }
+ render(){
+   return (<div style ={this.props.obj}>
+     {this.props.n}
+   </div>)
+ }
 }
-class Child extends Component {
-	render() {
-		return (
-			<div>
-				 我是子组件
-				 <Grondson></Grondson>
-			</div>
-		)
-	}
+function App1(props){
+  return <div>{props.name}</div>
 }
-class Grondson extends Component {
-  //定义一个静态属性接收上下文对象 上下对象会挂载到this.context上面   
-	static contextType = ThemeContext
-	render() {
-		console.log(this.context)
-		return (
-			< >
-				 我是孙子组件 爷爷给的钱是 {this.context.money}
-				 <button onClick={()=>this.context.consumMoney(10)}>花10块钱</button>
-			</>
-		)
-	}
+//expected  期望/希望
+App1.propTypes = {
+  name:PropTypes.string
 }
+//表示必须传值使用isRequired 
+// App.propTypes= {
+//    n:PropTypes.number.isRequired,
+//    name:PropTypes.string,
+//    //用来定义类型结构
+//    obj:PropTypes.shape({
+//      color: PropTypes.string,
+//      fontSize: PropTypes.number
+//    }),
+//    //oneof 表示是其中的一个值
+//    sex: PropTypes.oneOf(['男', '女','未知']),
+   
+// }
 
-
-render(<App></App>,window.root)
+render(<App1  name ={1} sex='未知' ></App1>, window.root);

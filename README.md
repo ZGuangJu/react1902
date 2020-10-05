@@ -206,6 +206,7 @@ class Grondson extends Component {
 	}
 }
 ```
+## PropTypes 类型验证 
 
 domdiff  
 ##  函数组件hooks  react 16.8版本之前   
