@@ -353,3 +353,5 @@ export default App1;
 [{name:'苹果',number:3,price:3.8 },{name:'橘子',number:6,price:8 }]
 3*3.8 + 6*8 
 // 用函数组件实现购物车 实现加1 减1功能  实现编辑功能 点击编辑的时候会出现删除按钮 点击删除可以删除选中的商品   
+
+2z!4hsYgpU7YQbp
