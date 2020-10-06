@@ -16,6 +16,7 @@ window.root = document.getElementById('root')
 document.createTextNode 创建文本节点 
 6. 同级元素不想用标签包裹的时候 可以用 <></> 去包裹 
   和 <React.Fragment> 的使用完全相等 
+  但是空标签不能给任何属性 React.Fragment可以给key并且也只能给key  
 	---
 // react 主要负责逻辑层 
 // reactdom 主要负责渲染  
@@ -35,6 +36,7 @@ document.createTextNode 创建文本节点
 ```
 8. 事件 事件名 on后面跟事件的驼峰命名 
 9. { } 必须有返回值 
+10. 布尔类型、Null 以及 Undefined 渲染时将会忽略(但是是合法的)
 ## 编程单词 
  Invalid  无效的    property 属性  dangerously 危险的 
 ## state变量渲染和setState修改数据
@@ -209,7 +211,8 @@ class Grondson extends Component {
 ## PropTypes 类型验证 
 
 domdiff  
-##  函数组件hooks  react 16.8版本之前   
+##  函数组件hooks  react 16.8版本之前 
+## 重要的useState useEffect  uselayoutEffect    
 只在顶层调⽤Hooks
 1. Hooks的调⽤尽量只在顶层作⽤域进⾏调⽤ 不要在循环，条件或者是嵌套函数中调⽤Hook，否则可能会⽆ 法确保每次组件渲染时都以相同的顺序调⽤Hook 
 2. 只在函数组件调⽤Hooks
@@ -252,9 +255,9 @@ React Hooks⽬前只⽀持函数组件，所以⼤家别在class组件或 者普
  useEffect(callback,array)
 
  useEffect(() =>{
+  xxxxxx
  //副作⽤逻辑
- xxxxxx
- return ()=>{
+ return ()=>{ //componentWillUnmount
  //清理副作⽤需要清理的内容
  //组件渲染和组件 卸载前执⾏的代码
  }
@@ -263,7 +266,6 @@ React Hooks⽬前只⽀持函数组件，所以⼤家别在class组件或 者普
 
 - array(可选参数)：数组，⽤于控制useEffect的执⾏
 分三种情况
-
  1. 空数组，则只会执⾏⼀次（即初次渲染render）
  2. ⾮空数组，useEffect会在数组发⽣改变后执⾏
  3. 不填array这个数组，useEffect每次渲染都会执⾏
@@ -285,8 +287,28 @@ const App=() => {
  </div>
  )
 }
+//定时器例子 清除副作用函数的用法
+function App(){
+	 let [count,setcount] = useState(0)
+	 useEffect(() => {
+	  let	timer =  setInterval(() => {
+			  console.log(timer)
+			  setcount(count=>count+1)
+		 }, 1000);
+		 return ()=>{
+			 clearInterval(timer)
+		 }
+	})
+  return <div>
+		  useEffect {count}
+	 </div>
+ }
 ```
-
+## useContext 使用上下文 
+```js
+ let value  = usecontext(上下文对象)
+ // 相当于类组件的 static contextType = 上下问对象 
+```
 
 
 
