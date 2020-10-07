@@ -1,29 +1,33 @@
-import React,{useContext,useState} from 'react'
-import ReactDom from 'react-dom'
-import themeContext,{thems} from './theme'
-function App() {
-	let [color, setColor] = useState(thems.dark)
-	function change(){
-	  let them  = color==thems.dark?thems.light:thems.dark
-		setColor(them)
+import React, { useState,PureComponent} from 'react';
+import ReactDom from 'react-dom';
+
+class Child2 extends PureComponent{
+	render() {
+		console.log('child2 render')
+		return (
+			<div>
+				 child2
+			</div>
+		)
 	}
-	return (
-		<themeContext.Provider value={{...color}}>
-			<Themebutton></Themebutton>
-			<button onClick={change}>点击切换主题</button>
-			当前主题 {color.background}
-		</themeContext.Provider>
-	)
 }
 
-// 定义按钮组件
-function Themebutton(){
-	 //拿到上下文对象 
-	 let themecon = useContext(themeContext)
-	 console.log(themecon)
-	return <button style={{color:themecon.color,backgroundColor:themecon.background}}>
-		按钮
-	
-	</button>
+function App(){
+	console.log('app render')
+	const [name,setname] = useState('guan')
+	const [user,setuser] =useState('a')
+  return  (<>
+         <input value={name}  onChange={(e)=>setname(e.target.value)} />
+				 {name}
+				 <Memochild></Memochild>
+				 <Child2></Child2>
+	    </>)
 }
-ReactDom.render(<App></App>,document.getElementById('root'))
+
+function Child(){
+	console.log('child render')
+    return <button>点击</button>
+}
+let Memochild = React.memo(Child)
+// REACT组件如果还是上一次的渲染结果     React将跳过渲染组件的操作并直接复用
+ReactDom.render(<App></App>, document.getElementById('root'));

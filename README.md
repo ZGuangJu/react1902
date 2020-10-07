@@ -309,8 +309,31 @@ function App(){
  let value  = usecontext(上下文对象)
  // 相当于类组件的 static contextType = 上下问对象 
 ```
+## useReducer useState的替代方案 
+``` js
+// 基本用法
+const [state, dispatch] = useReducer(reducer, initialArg, init);
+// 数组里面  state 状态  dispatch 派发
+// reducer  是一个函数 接受派发过来的动作并返回新的state initialArg 是一个初始化的状态 如果传递了第三个参数会讲init 这样初始 state 将被设置为 init(initialArg)。
+// 为啥用init?
+//这么做可以将用于计算 state 的逻辑提取到 reducer 外部，这也为将来对重置 state 的 action 做处理提供了便利：
+ ()=>dispatch({type:'add',payload:5}) 
+ //type 是动作类型（相当于我们写函数的函数名）
+ function reducer(state,action){}
+//reducer相当于管理员 用来进行状态管理 
+//参数 state action ->dispacth里传过来的对象 可以根据type属性判断传递过来的动作是什么  如果传递参数使用payload进行传递 
+```
+## useMemo memo 备忘
 
-
+## React 优化 （浅比较）
+1. 类组件  可以使用 PureComponent 
+```js
+ class Child2 extends PureComponent{}
+```
+2. 函数组件 类组件 React.memo(组件) React.memo是一个高阶组件
+```js
+  let Memochild = React.memo(Child)
+```
 
 ## 使用hooks实现异步请求  
 
