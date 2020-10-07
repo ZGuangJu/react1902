@@ -304,12 +304,12 @@ function App(){
 	 </div>
  }
 ```
-## useContext 使用上下文 
+3. useContext 使用上下文 
 ```js
  let value  = usecontext(上下文对象)
  // 相当于类组件的 static contextType = 上下问对象 
 ```
-## useReducer useState的替代方案 
+4. useReducer useState的替代方案 
 ``` js
 // 基本用法
 const [state, dispatch] = useReducer(reducer, initialArg, init);
@@ -323,9 +323,35 @@ const [state, dispatch] = useReducer(reducer, initialArg, init);
 //reducer相当于管理员 用来进行状态管理 
 //参数 state action ->dispacth里传过来的对象 可以根据type属性判断传递过来的动作是什么  如果传递参数使用payload进行传递 
 ```
-## useMemo memo 备忘
+5. useMemo和useCallback  memo 备忘 使用备忘录 
+```js
+//基本用法
+useMemo(callback,[deps])
+// 第一参数是回调函数 用来返回定义的状态
+// 第二个参数是一个数组 表示依赖项  用法和useEffect的依赖项完全相同 
+useCallback(callback,[deps])
+//相当于 useMemo(()=>fn,[deps])
+// 第一参数是回调函数 放置子组件依赖的函数 减少更新
+// 第二个参数是一个数组 表示依赖项  用法和useEffect的依赖项完全相同 
+```
+6. useRef 返回的是一个不可变的对象 
+```js
+ let input =useRef() // 通过 .current属性能拿到当前dom或者组件 用法同React.creatRef 
+```
+7. useImperativeHandle 使用命令式代码 
+```js
+// 第一个参数是传进来的ref Pref 
+// 第二个参数是回调函数   
+useImperativeHandle(Pref,()=>{
+  return {
+    // 使用自己定义的ref 
+  } //暴露给父组件的实例值 
+})
+// useImperativeHandle 可以让你在使用 ref 时自定义暴露给父组件的实例值。在大多数情况下，应当避免使用 ref 这样的命令式代码。useImperativeHandle 应当与 forwardRef 一起使用
+```
 
 ## React 优化 （浅比较）
+// 减少不必要的渲染 
 1. 类组件  可以使用 PureComponent 
 ```js
  class Child2 extends PureComponent{}
@@ -334,6 +360,20 @@ const [state, dispatch] = useReducer(reducer, initialArg, init);
 ```js
   let Memochild = React.memo(Child)
 ```
+3. 函数组件 如果子组件依赖父组件的数据可以使用 useMemo  
+```js
+ let data =useMemo(()=>{
+     return {count}
+	 },[count])
+```
+4. 函数组件 如果子组件依赖父组件的事件可以使用 useCallback
+```js
+  const add = useCallback(() => {
+    setconut((count) => count + 1);
+  }, []);
+```
+
+
 
 ## 使用hooks实现异步请求  
 
