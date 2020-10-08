@@ -1,0 +1,28 @@
+*{
+	padding: 0;margin: 0;
+}
+a{
+	text-decoration: none;
+	color: #666;
+}
+
+ul,li{
+	list-style: none;
+}
+nav{
+	padding: 20px 0;
+}
+nav ul{
+	display: flex
+}
+nav a{
+  border: 1px solid #000;
+	margin: 10px;
+}
+.selected{
+	color: 'red';
+	border: 1px solid  pink;
+}
+.active{
+	 color: aqua;
+}

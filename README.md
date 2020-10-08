@@ -349,6 +349,13 @@ useImperativeHandle(Pref,()=>{
 })
 // useImperativeHandle 可以让你在使用 ref 时自定义暴露给父组件的实例值。在大多数情况下，应当避免使用 ref 这样的命令式代码。useImperativeHandle 应当与 forwardRef 一起使用
 ```
+8. useLayoutEffect（布局副作用）
+useEffect在浏览器渲染完成后执行
+useLayoutEffect在浏览器渲染前执行
+特点：
+useLayoutEffect总是比useEffect先执行
+useLayoutEffect里面的任务最好影响了Layout（布局）
+一般建议使用useEffect 
 
 ## React 优化 （浅比较）
 // 减少不必要的渲染 
@@ -439,4 +446,64 @@ export default App1;
 3*3.8 + 6*8 
 // 用函数组件实现购物车 实现加1 减1功能  实现编辑功能 点击编辑的时候会出现删除按钮 点击删除可以删除选中的商品   
 
+## React 路由  
+ 1. 下载安装 npm i react-router-dom /yarn add  react-router-dom
+ 2. 路由的基本使用 
+ ```js
+ import React from "react";
+import {
+  Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
+export default function App() {
+  return (
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/users">Users</Link>
+            </li>
+          </ul>
+        </nav>
+
+           {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+        <Switch>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/users">
+            <Users />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+  );
+}
+
+function Home() {
+  return <h2>Home</h2>;
+}
+
+function About() {
+  return <h2>About</h2>;
+}
+
+function Users() {
+  return <h2>Users</h2>;
+}
+ ```
 2z!4hsYgpU7YQbp
