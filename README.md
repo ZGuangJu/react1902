@@ -506,6 +506,53 @@ function Users() {
   return <h2>Users</h2>;
 }
  ```
+## Router组件 包裹路由的容器 放在路由最外层 
+## Route  是表示路由组件(每一个路由) 
+1. path 表示路由的路径 /home =>Home组件  
+2. component 表示该路由对应的是什么组件 
+3. 路由上的属性会通过props传递给组件 
+4. 路由的模式 
+ - HashRouter  hash模式的路由 带#   
+ - BrowserRouter  history模式的路由   
+5. Route 的属性  
+  - exact 精确匹配(默认是true）
+  - strict 严格匹配  /about/  就必须这样访问 /about/
+  -  sensitive 严格大小写匹配  
+ 6. 路由的路径参数 pathname=路径名/:值   /user/2  /user/1   
+ - 路径参数会传到组件的props里面  路由所有的 props (match, location and history) 会传递到组件里  
+- props.history 放的是路由跳转的方法 go() push->跳转到那个路由  goBack->后退 goForward->前进 
+ 
+// 比如   根据多个用户的id访问用户详情 /user/:id :id 不固定但是必须传 
+7. render  替代react组件渲染  
+```js
+<Route path='/profile' render= {()=>(<div><RendeR/>这是render演示</div>)}></Route>
+```
+## Switch组件 保证每次值匹配一个路由 匹配到路由就不在继续往下匹配了
+## 导航组件 Link和NavLink  Redirect重定向组件
+ - to属性对应的几种写法 
+ 1. to: string to='/' 直接写pathname可以跟参数
+ 2.  to:object  <Link to={{pathname: "/courses"}}/> 
+  * pathname: 表示要链接到的路径的字符串。
+  * search: 表示查询参数的字符串形式。
+  * hash: 放入网址的 hash，例如 #a-hash。
+  * state: 状态持续到 location。通常用于隐式传参（埋点），可以用来统计页面来源
+  3. to: function
+```js
+  <Link to={location => `${location.pathname}?nam=lili`} />
+```
+## <NavLink> 导航组件 
+ 1. activeClassName  激活时候的class 
+ 2. activeStyle  激活时候的样式  
+ 3. exact  
+ 4. strict  
+>激活的navlink 会自动添加类名 .active 如果设置了activeClassName则不生效
+##  路由hooks
+>使用以下hooks你的reat版本需要16.8及以上 
+1. useHistory  路由跳转
+2. useParams  使用路径参数 
+3. useLocation 获取当前路由路由信息  
+4. useRouteMatch 获取路由匹配信息 
+
 
  ```js
 
