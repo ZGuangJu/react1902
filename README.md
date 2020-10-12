@@ -551,7 +551,7 @@ function Users() {
 1. useHistory  路由跳转
 2. useParams  使用路径参数 
 3. useLocation 获取当前路由路由信息  
-4. useRouteMatch 获取路由匹配信息 
+4. useRouteMatch 用来匹配路由  参数同route 
 
 
  ```js
@@ -665,4 +665,131 @@ function Cart() {
   return <h3>Cart</h3>;
 }
  ```
-2z!4hsYgpU7YQbp
+## 受保护的路由  
+1. 使用render函数  
+```js
+ <Route path="/lili" render ={(props)=>{
+	 function login(){
+		   props.history.push('/login')
+		}
+   //判断登录状态来进行页面跳转 
+	return	isLogin?<Lili></Lili>:<button onClick={login}>请登录</button>
+	}}></Route>
+```
+2. 使用高阶组件 
+```js
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+  withRouter
+} from "react-router-dom";
+
+////////////////////////////////////////////////////////////
+// 1. Click the public page
+// 2. Click the protected page
+// 3. Log in
+// 4. Click the back button, note the URL each time
+
+const AuthExample = () => (
+  <Router>
+    <div>
+      <AuthButton />
+      <ul>
+        <li>
+          <Link to="/public">Public Page</Link>
+        </li>
+        <li>
+          <Link to="/protected">Protected Page</Link>
+        </li>
+      </ul>
+      <Route path="/public" component={Public} />
+      <Route path="/login" component={Login} />
+      <PrivateRoute path="/protected" component={Protected} />
+    </div>
+  </Router>
+);
+
+const fakeAuth = {
+  isAuthenticated: false,
+  authenticate(cb) {
+    this.isAuthenticated = true;
+    setTimeout(cb, 100); // fake async
+  },
+  signout(cb) {
+    this.isAuthenticated = false;
+    setTimeout(cb, 100);
+  }
+};
+
+const AuthButton = withRouter(
+  ({ history }) =>
+    fakeAuth.isAuthenticated ? (
+      <p>
+        Welcome!{" "}
+        <button
+          onClick={() => {
+            fakeAuth.signout(() => history.push("/"));
+          }}
+        >
+          Sign out
+        </button>
+      </p>
+    ) : (
+      <p>You are not logged in.</p>
+    )
+);
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      fakeAuth.isAuthenticated ? (
+        <Component {...props} />
+      ) : (
+        <Redirect
+          to={{
+            pathname: "/login",
+            state: { from: props.location }
+          }}
+        />
+      )
+    }
+  />
+);
+
+const Public = () => <h3>Public</h3>;
+const Protected = () => <h3>Protected</h3>;
+
+class Login extends React.Component {
+  state = {
+    redirectToReferrer: false
+  };
+
+  login = () => {
+    fakeAuth.authenticate(() => {
+      this.setState({ redirectToReferrer: true });
+    });
+  };
+
+  render() {
+    const { from } = this.props.location.state || { from: { pathname: "/" } };
+    const { redirectToReferrer } = this.state;
+
+    if (redirectToReferrer) {
+      return <Redirect to={from} />;
+    }
+
+    return (
+      <div>
+        <p>You must log in to view the page at {from.pathname}</p>
+        <button onClick={this.login}>Log in</button>
+      </div>
+    );
+  }
+}
+
+export default AuthExample;
+```
