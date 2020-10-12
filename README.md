@@ -551,7 +551,31 @@ function Users() {
 1. useHistory  路由跳转
 2. useParams  使用路径参数 
 3. useLocation 获取当前路由路由信息  
-4. useRouteMatch 用来匹配路由  参数同route 
+4. useRouteMatch 用来匹配路由 参数可以传对象 参数同route 
+```js
+import React from 'react'
+import {useRouteMatch} from 'react-router-dom'
+function Blog(props) {
+	
+	return (
+		<div>
+			这是博客文章{props.match.params.title}
+		</div>
+	)
+}
+function Notfound(){
+	 return 'notfound'
+}
+function ShowBlog(){
+	 let  match =useRouteMatch({
+		 path:'/blog/:title',
+		 sensitive:true //大小写敏感 
+	 })
+	return match?<Blog match ={match}></Blog>:<Notfound/>
+}
+
+export default ShowBlog
+```
 
 
  ```js
@@ -793,3 +817,11 @@ class Login extends React.Component {
 
 export default AuthExample;
 ```
+## 路由过渡动画
+1. 下载  npm i react-transition-group/yarn add react-transition-group
+2. 引入组件 
+```js
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+```
+3. 把所有的路由用一个Route组件包裹(主要作用是用来传递location)  用render函数的方式把所有的路由作为返回值  
+
