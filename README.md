@@ -159,6 +159,10 @@ construtor render 初始化状态和接收props参数
 ## “commit 阶段” 可以使用 DOM，运行副作用，安排更新。(重点)
 componentDidMount  componentDidUpdate 
 componentWillUnmount
+## static getDerivedStateFromError()
+  组件报错会调用这个生命周期，参数是error 
+
+
 ## 上下文传值
 1. 创建上下文对象  createContext
 2. 祖先级组件使用Provider组件的value进行值传递
@@ -209,6 +213,31 @@ class Grondson extends Component {
 }
 ```
 ## PropTypes 类型验证 
+## React.lazy  Suspense(组件和路由) 代码分割 懒加载
+```js
+//1
+import React,{lazy,Suspense} from 'react'
+//2 组件或者路由的引入方式 
+const Lilei  = lazy(()=>import('./Lilei'))
+//3 Suspense组件 用来包裹需要懒加载的组件或者路由(路由需要包在最外层 Router里面) fallback 组件未加载完成之前显示的内容
+<Suspense fallback={<div>Loading...</div>}>
+ <需要懒加载的组件或者路由>
+<Suspense>
+``` 
+## props.children 
+每个组件都可以获取到 props.children。它包含组件的开始标签和结束标签之间的内容
+## 错误边界（Error Boundaries）
+
+## Portals 渲染和root同级的元素
+ 建立一个和root同级的节点
+```html  
+  <div id="root"></div>
+  <div id="modal-root"></div>
+  <!-- https://zh-hans.reactjs.org/docs/portals.html -->
+```
+
+
+
 
 domdiff  
 ##  函数组件hooks  react 16.8版本之前 
@@ -823,5 +852,5 @@ export default AuthExample;
 ```js
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 ```
-3. 把所有的路由用一个Route组件包裹(主要作用是用来传递location)  用render函数的方式把所有的路由作为返回值  
+3. 把所有的路由用一个Route组件包裹(主要作用是用来传递location)  用render函数的方式把所有的路由作为返回值  /另一种方式传递location 直接使用useLocation 
 
