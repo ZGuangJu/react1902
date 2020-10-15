@@ -8,6 +8,7 @@ import {
   Redirect,
   useLocation,
 } from 'react-router-dom';
+import Home from './api/Hooksapi';
 import Count from './Count';
 import Lilei1 from './Lilei1';
 
@@ -43,10 +44,13 @@ function App() {
       </nav>
       <Switch>
        <Suspense fallback={<Loading />}>
+        <Route path="/" exact component={Home}></Route>
         {/*lili 是受保护的路由 不登录不能访问  */}
         <AuthRoute path="/lili" component={Lili}></AuthRoute>
        
           <Route path="/lilei" component={Lilei}></Route>
+       
+         
        
           <Route path="/lilei1" component={Lilei1}></Route>
         <Route path="/login" component={Login}></Route>

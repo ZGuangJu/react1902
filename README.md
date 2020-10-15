@@ -235,11 +235,7 @@ const Lilei  = lazy(()=>import('./Lilei'))
   <div id="modal-root"></div>
   <!-- https://zh-hans.reactjs.org/docs/portals.html -->
 ```
-
-
-
-
-domdiff  
+  
 ##  函数组件hooks  react 16.8版本之前 
 ## 重要的useState useEffect  uselayoutEffect    
 只在顶层调⽤Hooks

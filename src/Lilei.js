@@ -1,13 +1,12 @@
 import React from 'react'
- import Model from './Model'
+import useAjax  from './useAjax'
 export default function Lilei() {
-	return (
+   const res = 	useAjax('http://localhost:8081/list')
+   const res2 = 	useAjax('http://localhost:8081/banner')
+	 console.log(res2)
+   return (
 		<div>
-			这是李雷家 公开的都能访问 
-			<Model>
-				  <button>点击显示</button>
-					<div style={{width:'100%',height:'100%',background:'rgba(0,0,0,0.3)',position:"fixed",top:0,left:0}}></div>
-			</Model>
+		  {res?'1':2}
 		</div>
 	)
 }
